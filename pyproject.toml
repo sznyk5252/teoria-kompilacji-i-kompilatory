@@ -1,0 +1,17 @@
+[project]
+name = "skaner"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "zadania",
+]
+
+[tool.uv.workspace]
+members = [
+    "universal-checker",
+]
+
+[tool.uv.sources]
+zadania = { workspace = true }

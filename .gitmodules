@@ -1,0 +1,3 @@
+[submodule "universal-checker"]
+	path = universal-checker
+	url = git@gitlab.com:szymek.krezolek/universal-checker.git
