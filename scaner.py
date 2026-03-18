@@ -46,7 +46,8 @@ class Scaner:
                     is_correct_char = any(t.single_char_predicates_for()(curr_char) for t in TokenCode)
 
                     if is_correct_char:
-                        raise ScaningError(f"Unexpected character {curr_char} on index {self._char_iterator}")
+                        raise ScaningError(f"Unexpected character {curr_char} on index {self._char_iterator},"+
+                                           f" does not fit in any expected token: {self._expected_after_last()}")
                     else:
                         raise UndefinedCharacterError(f"Unknown character {curr_char} on index {self._char_iterator}")
 
@@ -63,7 +64,7 @@ class Scaner:
             if token_type in [TokenCode.OPERATOR, TokenCode.RIGHT_PARENTESE, TokenCode.LEFT_PARENTESE]:
                 break
 
-            if self._char_iterator < len(self.source): # Tu dopisałem warunek żeby po zwiększeniu indeksu nie pobierało znaku poza max indeksem
+            if self._char_iterator < len(self.source):
                 single_char = self.source[self._char_iterator]
 
         if val != "":
