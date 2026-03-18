@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "zadania",
+    "checker",
 ]
 
 [tool.uv.workspace]
@@ -14,4 +14,4 @@ members = [
 ]
 
 [tool.uv.sources]
-zadania = { workspace = true }
+checker = { workspace = true }
