@@ -43,7 +43,12 @@ class Scaner:
                         break
 
                 if curr_position == self._char_iterator:
-                    raise UndefinedCharacterError(f"Unknown character {curr_char} on index {self._char_iterator}")
+                    is_correct_char = any(t.single_char_predicates_for()(curr_char) for t in TokenCode)
+
+                    if is_correct_char:
+                        raise ScaningError(f"Unexpected character {curr_char} on index {self._char_iterator}")
+                    else:
+                        raise UndefinedCharacterError(f"Unknown character {curr_char} on index {self._char_iterator}")
 
         self._check_bracketing()
 
@@ -54,6 +59,10 @@ class Scaner:
         while self._char_iterator < len(self.source) and predicate(single_char):
             val += single_char
             self._char_iterator += 1
+
+            if token_type in [TokenCode.OPERATOR, TokenCode.RIGHT_PARENTESE, TokenCode.LEFT_PARENTESE]:
+                break
+
             if self._char_iterator < len(self.source): # Tu dopisałem warunek żeby po zwiększeniu indeksu nie pobierało znaku poza max indeksem
                 single_char = self.source[self._char_iterator]
 
