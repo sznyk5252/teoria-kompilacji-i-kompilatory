@@ -31,10 +31,19 @@ class Scaner:
     def tokenize(self):
         self._char_iterator = 0
         self._tokens = []
-        # TODO:
-        # pętla po wszystkich typach i dla każdego zrobić _fit_from_front()
-        # sprawdzaj błędy, jak się pojawią to w komentarzu powinien być self._char_iterator
-        # sprawdzaj czy następny znak jest spodziewanym
+        while self._char_iterator < len(self.source):
+            curr_char = self.source[self._char_iterator]
+            if curr_char.isspace():
+                self._char_iterator += 1
+            else:
+                curr_position = self._char_iterator
+                for type in self._expected_after_last():
+                    self._fit_from_front(type)
+                    if self._char_iterator > curr_position:
+                        break
+
+                if curr_position == self._char_iterator:
+                    raise UndefinedCharacterError(f"Unknown character {curr_char} on index {self._char_iterator}")
 
         self._check_bracketing()
 
@@ -45,17 +54,29 @@ class Scaner:
         while self._char_iterator < len(self.source) and predicate(single_char):
             val += single_char
             self._char_iterator += 1
-            single_char = self.source[self._char_iterator]
+            if self._char_iterator < len(self.source): # Tu dopisałem warunek żeby po zwiększeniu indeksu nie pobierało znaku poza max indeksem
+                single_char = self.source[self._char_iterator]
 
         if val != "":
             self._tokens.append((token_type, val))
 
     def _expected_after_last(self) -> list[TokenCode]:
-        # TODO:
-        # w szczególności na start jest cokolwiek
-        # resztę obczaisz
-        # () - są zawsze ok
-        pass
+        if not self._tokens:
+            return [TokenCode.LEFT_PARENTESE, TokenCode.INTEGER, TokenCode.IDENTIFIER]
+
+        last_token = self._tokens[-1][0]
+        if last_token == TokenCode.LEFT_PARENTESE:
+            return [TokenCode.LEFT_PARENTESE, TokenCode.INTEGER, TokenCode.RIGHT_PARENTESE, TokenCode.IDENTIFIER]
+        elif last_token == TokenCode.RIGHT_PARENTESE:
+            return [TokenCode.RIGHT_PARENTESE, TokenCode.OPERATOR]
+        elif last_token == TokenCode.INTEGER:
+            return [TokenCode.OPERATOR, TokenCode.RIGHT_PARENTESE]
+        elif last_token == TokenCode.IDENTIFIER:
+            return [TokenCode.OPERATOR, TokenCode.RIGHT_PARENTESE]
+        else:
+            return [TokenCode.INTEGER, TokenCode.LEFT_PARENTESE, TokenCode.IDENTIFIER]
+
+
 
     def _check_bracketing(self):
         left_count = 0

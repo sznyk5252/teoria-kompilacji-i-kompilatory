@@ -7,7 +7,7 @@ def main():
     my_scaner = Scaner(input_str)
     my_scaner.tokenize()
     print(my_scaner)
-    # print((TokenCode.INTIGER,'5'))
+    # print((TokenCode.INTEGER,'5'))
 
 
 if __name__ == "__main__":

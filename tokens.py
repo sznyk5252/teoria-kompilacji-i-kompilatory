@@ -4,16 +4,16 @@ from functools import cache
 
 
 class TokenCode(Enum):
-    INTIGER = "INT"
+    INTEGER = "INT"
     LEFT_PARENTESE = "LP"
     RIGHT_PARENTESE = "RP"
     IDENTIFIER = "ID"
-    OPERATOR = "OPR"
+    OPERATOR = "OP" #Zmieniłem na OP bo w testach chcialo OP zamiast OPR i chciałem zobaczyć czy to tylko ten błąd
 
     @cache
     def single_char_predicates_for(self) -> Callable[[str], bool]:
         match self:
-            case TokenCode.INTIGER:
+            case TokenCode.INTEGER:
                 return str.isdigit
             case TokenCode.LEFT_PARENTESE:
                 return lambda x: x in "("
