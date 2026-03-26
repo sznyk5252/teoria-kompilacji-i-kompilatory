@@ -1,1 +1,8 @@
-(ID, 'abc')
+(TAG, 'RANGE')
+(LP, '(')
+(ARG, '0')
+(SEP, ',')
+(SPACE, ' ')
+(ARG, '12')
+(RP, ')')
+

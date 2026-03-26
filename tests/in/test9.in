@@ -1,1 +1,2 @@
-a*2+-5
+VAR(x) VAR(y)
+FINALCHECK(x + y == 10)

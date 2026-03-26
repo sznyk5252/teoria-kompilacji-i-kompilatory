@@ -1,1 +1,7 @@
-(INT, '1')
+(NUMB, '1')
+(SPACE, ' ')
+(NUMB, '2')
+(SPACE, ' ')
+(NUMB, '3')
+(SPACE, ' ')
+(NUMB, '4')
