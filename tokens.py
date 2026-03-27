@@ -3,7 +3,7 @@ from typing import Callable
 from functools import cache
 import re
 
-
+# MACRA + PETLEs
 class TokenCode(Enum):
     TAG = "TAG"
     LEFT_PARENTESE = "LP"
@@ -15,13 +15,14 @@ class TokenCode(Enum):
     STRING = "STR"
     SPACE = "SPACE"
     NEWLINE = "ENDL"
+    COMMENT = "COM"
 
     @cache
     def predicates_for(self) -> Callable[[str], bool]:
         match self:
             case TokenCode.TAG:
                 return lambda x: (
-                    x in ("RANGE", "MATCH", "ANYOF", "THROWS", "VAR", "FINALCHECK")
+                    x in ("RANGE", "MATCH", "ANYOF", "THROWS", "VAR", "FINALCHECK", "DEF", "REP")
                 )
             case TokenCode.LEFT_PARENTESE:
                 return lambda x: x == "("
@@ -34,13 +35,15 @@ class TokenCode(Enum):
             case TokenCode.NUMBER:
                 return lambda x: bool(
                     re.fullmatch(r"-?[0-9]+\.?[0-9]*", x)
-                )  # TODO: zastąpić żeby nie było re - bo chyba mnie może być
+                )  # TODO: zastąpić żeby nie było re - bo chyba nie może być
             case TokenCode.STRING:
                 return lambda x: True
             case TokenCode.SPACE:
                 return lambda x: x == " "
             case TokenCode.NEWLINE:
                 return lambda x: x == "\n"
+            case TokenCode.COMMENT:
+                return lambda x: x.startswith('#')
             case _:
                 raise NotImplementedError(f"Unimplemented predicate for token: {self}")
 
