@@ -1,4 +1,4 @@
 (TAG, 'THROWS')
 (LP, '(')
-(ARG, 'EXCEPTION')
+(STR, 'EXCEPTION')
 (LP, '(')

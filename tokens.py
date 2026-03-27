@@ -2,7 +2,6 @@ from enum import Enum
 from typing import Callable
 from functools import cache
 from automata import Automata, StringAutomata, NumberAutomata, CommentAutomata, SingleCharAutomata, TagAutomata
-import re
 
 # MACRA + PETLEs
 class TokenCode(Enum):
@@ -14,14 +13,15 @@ class TokenCode(Enum):
     NUMBER = "NUMB"
     STRING = "STR"
     SPACE = "SPACE"
-    NEWLINE = "ENDL"
+    NEWLINE = "NEWLINE"
     COMMENT = "COM"
 
     @cache
     def automata_for(self) -> Automata:
+        brake_chars = ['\n',' ','(',')',',']
         match self:
             case TokenCode.TAG:
-                return TagAutomata(possible_tags= ["RANGE", "MATCH", "ANYOF", "THROWS", "VAR", "FINALCHECK", "DEF", "REP"] )
+                return TagAutomata(possible_tags= ["RANGE", "MATCH", "ANYOF", "THROWS", "VAR", "FINALCHECK", "DEF", "REP"], end_chars=brake_chars )
             case TokenCode.LEFT_PARENTESE:
                 return SingleCharAutomata(char='(')
             case TokenCode.RIGHT_PARENTESE:
@@ -29,15 +29,15 @@ class TokenCode(Enum):
             case TokenCode.SEPARATOR:
                 return SingleCharAutomata(char=',')
             case TokenCode.NUMBER:
-                return NumberAutomata()
+                return NumberAutomata(end_chars=brake_chars)
             case TokenCode.STRING:
-                return StringAutomata(end_char=' ')
+                return StringAutomata(end_chars=brake_chars)
             case TokenCode.SPACE:
                 return SingleCharAutomata(char=' ')
             case TokenCode.NEWLINE:
                 return SingleCharAutomata(char='\n')
             case TokenCode.COMMENT:
-                return CommentAutomata(begin_char='#', end_char='\n0')
+                return CommentAutomata(begin_char='#', end_chars=['\n'])
             case _:
                 raise NotImplementedError(f"Unimplemented predicate for token: {self}")
 

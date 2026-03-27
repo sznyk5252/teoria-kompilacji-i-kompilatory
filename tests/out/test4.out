@@ -1,8 +1,8 @@
 (TAG, 'RANGE')
 (LP, '(')
-(ARG, '0')
+(NUMB, '0')
 (SEP, ',')
 (SPACE, ' ')
-(ARG, '12')
+(NUMB, '12')
 (RP, ')')
 

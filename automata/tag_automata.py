@@ -6,9 +6,9 @@ class TagAutomata(Automata):
     possible_tags: list[str] = field(init= True, default_factory=lambda: [])
 
     def step(self, input_symbol: str):
-        assert len(input_symbol) == 1
+        super().step(input_symbol)
         if self._current_state == self.State.STOPED:
-            return
+            return self.State.STOPED
 
         current_prefix = self.extract_value() + input_symbol
         if any(tag.startswith(current_prefix) for tag in self.possible_tags):
@@ -19,4 +19,5 @@ class TagAutomata(Automata):
                 self._current_state = self.State.UNDEFINED
         else:
             self._current_state = self.State.STOPED
+        return self._current_state
             

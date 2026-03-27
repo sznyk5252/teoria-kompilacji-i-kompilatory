@@ -7,9 +7,9 @@ class CommentAutomata(Automata):
     end_char: str = field(init=True, default='\n')
 
     def step(self, input_symbol: str):
-        assert len(input_symbol) == 1
+        super().step(input_symbol)
         if self._current_state == self.State.STOPED:
-            return 
+            return self._current_state
         
         if input_symbol == self.begin_char and self._current_state in (self.State.UNDEFINED, self.State.PASSES):
             self._current_state = self.State.PASSES
@@ -18,3 +18,5 @@ class CommentAutomata(Automata):
             self._input.append(input_symbol)
         else:
             self._current_state = self.State.STOPED
+        
+        return self._current_state

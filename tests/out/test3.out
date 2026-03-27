@@ -5,6 +5,7 @@
 (NUMB, '3')
 (NEWLINE, '\n')
 (NUMB, '1.2')
+(SPACE, ' ')
 (NUMB, '4.5')
 (NEWLINE, '\n')
 (NUMB, '123')

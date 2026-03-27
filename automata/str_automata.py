@@ -3,36 +3,36 @@ from dataclasses import dataclass, field
 
 @dataclass
 class StringAutomata(Automata):
-    end_char: str = field(init= True, default=" ") 
     extra_closure_char: str = field(init= True, default="'") 
     _closures: int = field(init=False, default=0)
 
     def step(self, input_symbol: str):
-        assert len(input_symbol) == 1
+        super().step(input_symbol)
         if self._current_state == self.State.STOPED:
-            return 
+            return self._current_state 
 
         if self._closures == 2:
             self._current_state = self.State.STOPED
-            return
+            return self._current_state
 
         if self.first_step() and input_symbol == self.extra_closure_char:
-            self._in_closure = 1
+            self._closures = 1
             self._current_state = self.State.PASSES
             self._input.append(input_symbol)
-            return
+            return self._current_state
 
-        if self._in_closure == 1:
+        if self._closures == 1:
             if input_symbol == self.extra_closure_char:
-                self._in_closure = 2
+                self._closures = 2
                 self._current_state = self.State.PASSES
                 self._input.append(input_symbol)
             else:
                 self._input.append(input_symbol)
-            return
+            return self._current_state
             
-        if input_symbol == self.end_char:
+        if input_symbol in self.end_chars:
             self._current_state = self.State.STOPED
         else:
             self._current_state = self.State.PASSES
             self._input.append(input_symbol)
+        return self._current_state
