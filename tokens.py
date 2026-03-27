@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Callable
 from functools import cache
+from automata import Automata, StringAutomata, NumberAutomata, CommentAutomata, SingleCharAutomata, TagAutomata
 import re
 
 # MACRA + PETLEs
@@ -8,9 +9,8 @@ class TokenCode(Enum):
     TAG = "TAG"
     LEFT_PARENTESE = "LP"
     RIGHT_PARENTESE = "RP"
-    IDENTIFIER = "ID"
     SEPARATOR = "SEP"
-    ARGUMENT = "ARG"
+    # ARGUMENT = "ARG" - to powinien być po prostu str/numb
     NUMBER = "NUMB"
     STRING = "STR"
     SPACE = "SPACE"
@@ -18,32 +18,26 @@ class TokenCode(Enum):
     COMMENT = "COM"
 
     @cache
-    def predicates_for(self) -> Callable[[str], bool]:
+    def automata_for(self) -> Automata:
         match self:
             case TokenCode.TAG:
-                return lambda x: (
-                    x in ("RANGE", "MATCH", "ANYOF", "THROWS", "VAR", "FINALCHECK", "DEF", "REP")
-                )
+                return TagAutomata(possible_tags= ["RANGE", "MATCH", "ANYOF", "THROWS", "VAR", "FINALCHECK", "DEF", "REP"] )
             case TokenCode.LEFT_PARENTESE:
-                return lambda x: x == "("
+                return SingleCharAutomata(char='(')
             case TokenCode.RIGHT_PARENTESE:
-                return lambda x: x == ")"
+                return SingleCharAutomata(char=')')
             case TokenCode.SEPARATOR:
-                return lambda x: x == ","
-            case TokenCode.ARGUMENT:
-                return TokenCode.STRING.predicates_for()
+                return SingleCharAutomata(char=',')
             case TokenCode.NUMBER:
-                return lambda x: bool(
-                    re.fullmatch(r"-?[0-9]+\.?[0-9]*", x)
-                )  # TODO: zastąpić żeby nie było re - bo chyba nie może być
+                return NumberAutomata()
             case TokenCode.STRING:
-                return lambda x: True
+                return StringAutomata(end_char=' ')
             case TokenCode.SPACE:
-                return lambda x: x == " "
+                return SingleCharAutomata(char=' ')
             case TokenCode.NEWLINE:
-                return lambda x: x == "\n"
+                return SingleCharAutomata(char='\n')
             case TokenCode.COMMENT:
-                return lambda x: x.startswith('#')
+                return CommentAutomata(begin_char='#', end_char='\n0')
             case _:
                 raise NotImplementedError(f"Unimplemented predicate for token: {self}")
 
