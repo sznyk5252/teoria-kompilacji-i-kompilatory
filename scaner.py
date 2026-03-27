@@ -4,6 +4,7 @@ from automata.automata import Automata
 from tokens import TokenCode, TokenValue, Token
 from contexts import Context
 
+
 class ScaningError(Exception):
     """
     This is thrown when an error occur while scanning the input string
@@ -38,7 +39,7 @@ class Scaner:
             TokenCode.LEFT_PARENTESE,
             TokenCode.RIGHT_PARENTESE,
             TokenCode.SEPARATOR,
-            TokenCode.NUMBER
+            TokenCode.NUMBER,
         ]
 
         while self._char_iterator < len(self.source):
@@ -50,48 +51,59 @@ class Scaner:
                 automata.reset()
                 temp_iterator = self._char_iterator
                 last_accepted_len = 0
-                
+
                 while temp_iterator < len(self.source):
                     char = self.source[temp_iterator]
                     # if token_code == TokenCode.SPACE:
                     #     print(f"token: {token_code}, char: {char}, automata: {automata}")
-                    if automata.step(char) == Automata.State.STOPED or (char == '\n' and token_code != TokenCode.NEWLINE):
+                    if automata.step(char) == Automata.State.STOPED or (
+                        char == "\n" and token_code != TokenCode.NEWLINE
+                    ):
                         break
                     temp_iterator += 1
                     if automata.is_accepted():
                         last_accepted_len = temp_iterator - self._char_iterator
                 if last_accepted_len > 0 and token_code in prioritised_tokens:
-                    best_match = (token_code, self.source[self._char_iterator:self._char_iterator + last_accepted_len])
+                    best_match = (
+                        token_code,
+                        self.source[
+                            self._char_iterator : self._char_iterator
+                            + last_accepted_len
+                        ],
+                    )
                     longest_match_len = last_accepted_len
                     break
                 if last_accepted_len > longest_match_len:
                     longest_match_len = last_accepted_len
-                    best_match = (token_code, self.source[self._char_iterator:self._char_iterator + last_accepted_len])
+                    best_match = (
+                        token_code,
+                        self.source[
+                            self._char_iterator : self._char_iterator
+                            + last_accepted_len
+                        ],
+                    )
 
             if not best_match or longest_match_len == 0:
                 raise UndefinedCharacterError(
-                    f"No valid token found at position {self._char_iterator}: '{self.source[self._char_iterator:self._char_iterator+10]}...' last char: '{char}'"
+                    f"No valid token found at position {self._char_iterator}: '{self.source[self._char_iterator : self._char_iterator + 10]}...' last char: '{char}'"
                 )
 
             token_code, token_value = best_match
-            
 
             self._tokens.append((token_code, token_value))
             self._char_iterator += longest_match_len
-            
-
 
     # def _fit_from_front(self, token_type: TokenCode) -> int:
     #     automata = token_type.automata_for()
     #     iterator = self._char_iterator
     #     single_char = self.source[iterator]
-        
+
     #     while iterator < len(self.source) and (automata.still_running() or automata.is_accepted()):
     #         automata.step(single_char)
     #         iterator += 1
     #         if iterator < len(self.source):
     #             single_char = self.source[iterator]
-        
+
     #     return iterator
 
     # def _expected_after_last(self) -> list[TokenCode]:
@@ -109,8 +121,6 @@ class Scaner:
     #         return [TokenCode.OPERATOR, TokenCode.RIGHT_PARENTESE]
     #     else:
     #         return [TokenCode.INTEGER, TokenCode.LEFT_PARENTESE, TokenCode.IDENTIFIER]
-
-
 
     # def _check_bracketing(self):
     #     left_count = 0

@@ -1,9 +1,10 @@
 from .automata import Automata
 from dataclasses import dataclass, field
 
+
 @dataclass
 class SingleCharAutomata(Automata):
-    char: str = field(init=True, default=' ')
+    char: str = field(init=True, default=" ")
 
     def step(self, input_symbol: str):
         assert len(input_symbol) == 1

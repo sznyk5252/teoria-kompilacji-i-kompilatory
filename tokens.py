@@ -1,7 +1,14 @@
 from enum import Enum
-from typing import Callable
 from functools import cache
-from automata import Automata, StringAutomata, NumberAutomata, CommentAutomata, SingleCharAutomata, TagAutomata
+from automata import (
+    Automata,
+    StringAutomata,
+    NumberAutomata,
+    CommentAutomata,
+    SingleCharAutomata,
+    TagAutomata,
+)
+
 
 # MACRA + PETLEs
 class TokenCode(Enum):
@@ -18,26 +25,38 @@ class TokenCode(Enum):
 
     @cache
     def automata_for(self) -> Automata:
-        brake_chars = ['\n',' ','(',')',',']
+        brake_chars = ["\n", " ", "(", ")", ","]
         match self:
             case TokenCode.TAG:
-                return TagAutomata(possible_tags= ["RANGE", "MATCH", "ANYOF", "THROWS", "VAR", "FINALCHECK", "DEF", "REP"], end_chars=brake_chars )
+                return TagAutomata(
+                    possible_tags=[
+                        "RANGE",
+                        "MATCH",
+                        "ANYOF",
+                        "THROWS",
+                        "VAR",
+                        "FINALCHECK",
+                        "DEF",
+                        "REP",
+                    ],
+                    end_chars=brake_chars,
+                )
             case TokenCode.LEFT_PARENTESE:
-                return SingleCharAutomata(char='(')
+                return SingleCharAutomata(char="(")
             case TokenCode.RIGHT_PARENTESE:
-                return SingleCharAutomata(char=')')
+                return SingleCharAutomata(char=")")
             case TokenCode.SEPARATOR:
-                return SingleCharAutomata(char=',')
+                return SingleCharAutomata(char=",")
             case TokenCode.NUMBER:
                 return NumberAutomata(end_chars=brake_chars)
             case TokenCode.STRING:
                 return StringAutomata(end_chars=brake_chars)
             case TokenCode.SPACE:
-                return SingleCharAutomata(char=' ')
+                return SingleCharAutomata(char=" ")
             case TokenCode.NEWLINE:
-                return SingleCharAutomata(char='\n')
+                return SingleCharAutomata(char="\n")
             case TokenCode.COMMENT:
-                return CommentAutomata(begin_char='#', end_chars=['\n'])
+                return CommentAutomata(begin_char="#", end_chars=["\n"])
             case _:
                 raise NotImplementedError(f"Unimplemented predicate for token: {self}")
 

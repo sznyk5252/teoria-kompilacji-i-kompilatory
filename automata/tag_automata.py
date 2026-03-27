@@ -1,9 +1,10 @@
 from .automata import Automata
 from dataclasses import dataclass, field
 
+
 @dataclass
 class TagAutomata(Automata):
-    possible_tags: list[str] = field(init= True, default_factory=lambda: [])
+    possible_tags: list[str] = field(init=True, default_factory=lambda: [])
 
     def step(self, input_symbol: str):
         super().step(input_symbol)
@@ -20,4 +21,3 @@ class TagAutomata(Automata):
         else:
             self._current_state = self.State.STOPED
         return self._current_state
-            

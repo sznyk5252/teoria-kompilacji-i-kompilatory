@@ -16,7 +16,6 @@ class Context(Enum):
                 return [TokenCode.LEFT_PARENTESE]
         raise NotImplementedError(f"Unimplemeted escape char for: {self}")
 
-
     def escape_tokens(self) -> list[TokenCode]:
         match self:
             case Context.BASIC:
@@ -37,7 +36,12 @@ class Context(Enum):
                 return [
                     code
                     for code in TokenCode
-                    if code not in (TokenCode.LEFT_PARENTESE, TokenCode.RIGHT_PARENTESE, TokenCode.SEPARATOR)
+                    if code
+                    not in (
+                        TokenCode.LEFT_PARENTESE,
+                        TokenCode.RIGHT_PARENTESE,
+                        TokenCode.SEPARATOR,
+                    )
                 ]
             case Context.IN_TAG:
                 return [code for code in TokenCode]
