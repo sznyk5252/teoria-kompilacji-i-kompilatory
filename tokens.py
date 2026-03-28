@@ -1,5 +1,7 @@
 from enum import Enum
 from functools import cache
+from unittest import case
+
 from automata import (
     Automata,
     StringAutomata,
@@ -62,8 +64,21 @@ class TokenCode(Enum):
 
     @cache
     def get_color(self):
-        # TODO
-        pass
+        match self:
+            case TokenCode.TAG:
+                return "purple"
+            case TokenCode.LEFT_PARENTESE | TokenCode.RIGHT_PARENTESE:
+                return "red"
+            case TokenCode.SEPARATOR:
+                return "white"
+            case TokenCode.NUMBER:
+                return "orange"
+            case TokenCode.STRING:
+                return "green"
+            case TokenCode.SPACE | TokenCode.NEWLINE:
+                return ""
+            case TokenCode.COMMENT:
+                return "grey"
 
     def __str__(self) -> str:
         return self.value
