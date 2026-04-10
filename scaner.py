@@ -22,7 +22,6 @@ class UndefinedCharacterError(ScaningError):
     This is thrown when undefined character occur
     """
 
-
 @dataclass
 class Scaner:
     source: str

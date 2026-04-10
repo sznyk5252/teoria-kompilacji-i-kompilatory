@@ -1,3 +1,13 @@
 DEF(x, 10)
 RANGE(1, 100)
+MATCH(x > 10)
+MATCH(x < 10)
 "Witaj!"
+RANGE(-10.5, 20.))(abc)
+ANYOF(abc, cba) 123
+( ())
+1 2 3
+1.2 4.5
+123
+VAR(x) VAR(y)
+FINALCHECK(x + y == 10)
