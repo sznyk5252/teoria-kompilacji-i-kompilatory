@@ -11,3 +11,5 @@ ANYOF(abc, cba) 123
 123
 VAR(x) VAR(y)
 FINALCHECK(x + y == 10)
+RANGE(-10.5, 20.))(abc)
+ANYOF(abc, cba) 123
