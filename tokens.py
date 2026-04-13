@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import cache
-from unittest import case
+# from unittest import case
 
 from automata import (
     Automata,
@@ -79,6 +79,10 @@ class TokenCode(Enum):
                 return ""
             case TokenCode.COMMENT:
                 return "grey"
+        print(f"Warning: undefined color for token: {self}")
+        return "grey"
+
+
 
     def __str__(self) -> str:
         return self.value

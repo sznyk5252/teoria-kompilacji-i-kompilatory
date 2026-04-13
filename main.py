@@ -15,10 +15,7 @@ def main():
     print(my_scaner)
 
     generator = HTMLGenerator(my_scaner._tokens)
-    generator.generate()
-
-    #print((TokenCode.INTEGER,'5'))
-    #print(re.fullmatch(r'-?[0-9]+\.?[0-9]*','-134,1'))
+    print(generator.get_str())
 
 
 if __name__ == "__main__":
