@@ -22,7 +22,7 @@ class TokenCode(Enum):
     NUMBER = "NUMB"
     STRING = "STR"
     SPACE = "SPACE"
-    NEWLINE = "NEWLINE"
+    NEWLINE = "ENDL"
     COMMENT = "COM"
 
     @cache
@@ -37,7 +37,7 @@ class TokenCode(Enum):
                         "ANYOF",
                         "THROWS",
                         "VAR",
-                        "FINALCHECK",
+                        "CHECK",
                         "DEF",
                         "REP",
                     ],
